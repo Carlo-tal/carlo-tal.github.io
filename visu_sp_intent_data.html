@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>意图和槽位统计可视化</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="intentChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="slotChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="nonEmptySlotChart"></canvas>
+    </div>
+
+    <script>
+        // 意图分布饼图
+        const intentCtx = document.getElementById('intentChart').getContext('2d');
+        new Chart(intentCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Other', 'Part', 'Full'],
+                datasets: [{
+                    data: [618, 603, 362],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '意图分布'
+                    }
+                }
+            }
+        });
+
+        // 槽位分布条形图
+        const slotCtx = document.getElementById('slotChart').getContext('2d');
+        new Chart(slotCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Full', 'Part', 'Other'],
+                datasets: [
+                    {
+                        label: 'subject',
+                        data: [362, 0, 0],
+                        backgroundColor: '#FF6384'
+                    },
+                    {
+                        label: 'period',
+                        data: [305, 116, 0],
+                        backgroundColor: '#36A2EB'
+                    },
+                    {
+                        label: 'course',
+                        data: [231, 0, 0],
+                        backgroundColor: '#FFCE56'
+                    },
+                    {
+                        label: 'fuzzy_kp',
+                        data: [0, 594, 0],
+                        backgroundColor: '#4BC0C0'
+                    },
+                    {
+                        label: 'ability',
+                        data: [0, 512, 0],
+                        backgroundColor: '#9966FF'
+                    },
+                    {
+                        label: 'query',
+                        data: [0, 0, 618],
+                        backgroundColor: '#FF9F40'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '每个意图的槽位分布'
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+
+        // 非空槽位数量分布堆叠条形图
+        const nonEmptySlotCtx = document.getElementById('nonEmptySlotChart').getContext('2d');
+        new Chart(nonEmptySlotCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Full', 'Part', 'Other'],
+                datasets: [
+                    {
+                        label: '1个非空槽位',
+                        data: [16, 82, 618],
+                        backgroundColor: '#FF6384'
+                    },
+                    {
+                        label: '2个非空槽位',
+                        data: [156, 423, 0],
+                        backgroundColor: '#36A2EB'
+                    },
+                    {
+                        label: '3个非空槽位',
+                        data: [190, 98, 0],
+                        backgroundColor: '#FFCE56'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '每个意图的非空槽位数量分布'
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
